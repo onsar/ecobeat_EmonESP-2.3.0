@@ -36,6 +36,9 @@
 // SETUP
 // -------------------------------------------------------------------
 void setup() {
+  // modificacion ecobeat
+  pinMode(2, OUTPUT);
+  // -----------------------------------------
   delay(2000);
 
   Serial.begin(115200);
@@ -68,8 +71,7 @@ void setup() {
 // -------------------------------------------------------------------
 // LOOP
 // -------------------------------------------------------------------
-void loop()
-{
+void loop(){
   ota_loop();
   web_server_loop();
   wifi_loop();
@@ -77,13 +79,14 @@ void loop()
   String input = "";
   boolean gotInput = input_get(input);
 
-  if (wifi_mode == WIFI_MODE_STA || wifi_mode == WIFI_MODE_AP_AND_STA)
-  {
+  if (wifi_mode == WIFI_MODE_STA || wifi_mode == WIFI_MODE_AP_AND_STA){
     if(emoncms_apikey != 0 && gotInput) {
       emoncms_publish(input);
+      // modificacion ecobeat
+      Serial.println("published");
+      // -------------------------------------
     }
-    if(mqtt_server != 0)
-    {
+    if(mqtt_server != 0){
       mqtt_loop();
       if(gotInput) {
         mqtt_publish(input);
@@ -91,4 +94,3 @@ void loop()
     }
   }
 } // end loop
-
